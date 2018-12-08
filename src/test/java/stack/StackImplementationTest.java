@@ -10,6 +10,7 @@ import java.util.EmptyStackException;
 public class StackImplementationTest {
     private static final int TOP_ITEM = 1004;
     private static final int UNDER_TOP_ITEM = 1003;
+    private static final String EMPTY_STACK_SIZE = "0";
 
     private Stack stackForTest;
     private int result;
@@ -62,8 +63,7 @@ public class StackImplementationTest {
     }
 
     private Boolean isEmpty(Stack testStack) {
-        int lengthOfTestedStack = testStack.toString().length();
-        int lengthOfNewEmptyStack = new StackImplementation().toString().length();
-        return lengthOfTestedStack == lengthOfNewEmptyStack;
+        String sizeOfTestStack = testStack.toString();
+        return sizeOfTestStack.equals(EMPTY_STACK_SIZE);
     }
 }

@@ -1,46 +1,69 @@
 package stack;
 
-import java.util.Arrays;
 import java.util.EmptyStackException;
 
 public class StackImplementation<E> implements Stack<E> {
 
-    private static final int INITIAL_CAPACITY = 0;
-
-    private E elements[];
-
-    public StackImplementation() {
-        elements = (E[]) new Object[INITIAL_CAPACITY];
-    }
+    private Element<E> topElement;
+    private int size;
 
     public E pop() {
-        if (elements.length < 1) {
-            throw new EmptyStackException();
-        }
-        E topElement = elements[elements.length - 1];
-        elements = Arrays.copyOf(elements, elements.length - 1);
-        return topElement;
+        isEmpty();
+        E oldTopElement = topElement.getItem();
+        topElement = topElement.getElementUnder();
+        size--;
+        return oldTopElement;
     }
 
     public E peek() {
-        if (elements.length < 1) {
-            throw new EmptyStackException();
-        }
-        return elements[elements.length - 1];
+        isEmpty();
+        return topElement.getItem();
     }
 
     public void push(E item) {
-        elements = Arrays.copyOf(elements, elements.length + 1);
-        elements[elements.length - 1] = item;
+        Element tempElement = new Element(item);
+        tempElement.setElementUnder(topElement);
+        topElement = tempElement;
+        size++;
     }
 
     public void clear() {
-        elements = (E[]) new Object[INITIAL_CAPACITY];
+        topElement = new Element<>(null);
+        size = 0;
     }
 
+    private void isEmpty() {
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+    }
+
+    //Only for checking the size of the stack
     @Override
     public String toString() {
-        return Arrays.toString(elements);
+        return String.valueOf(size);
+    }
+
+    private static class Element<E> {
+        private E item;
+
+        private Element<E> elementUnder;
+
+        Element(E item) {
+            this.item = item;
+        }
+
+        E getItem() {
+            return item;
+        }
+
+        Element<E> getElementUnder() {
+            return elementUnder;
+        }
+
+        void setElementUnder(Element<E> elementUnder) {
+            this.elementUnder = elementUnder;
+        }
     }
 
 }
